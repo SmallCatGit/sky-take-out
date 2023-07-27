@@ -81,6 +81,7 @@
             <artifactId>aspectjweaver</artifactId>
         </dependency>
 
+        <!--为MVC框架集成Swagger生成api文档的增强方案-->
         <dependency>
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>knife4j-spring-boot-starter</artifactId>
