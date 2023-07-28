@@ -1,6 +1,9 @@
 package com.sky.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -28,8 +31,8 @@ public class Employee implements Serializable {
     private String idNumber;
 
     private Integer status;
-
-    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    // TODO JsonFormat:对日期进行格式化
+    // @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createTime;
 
     //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

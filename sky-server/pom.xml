@@ -66,6 +66,10 @@
             <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
+        <!--
+            pagehelper:mybatis提供的插件,简化分页代码的编写
+                底层基于mybatis拦截器实现,会把后面的limit的sql动态拼接,自动计算参数,最终实现分页
+        -->
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
