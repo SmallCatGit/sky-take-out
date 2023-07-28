@@ -103,4 +103,19 @@ public class EmployeeController {
         PageResult result = employeeService.page(employeePageQueryDTO);
         return Result.success(result);
     }
+
+    /**
+     * 员工状态启用与禁用
+     * TODO RequestParam可以不用加,只要变量和前端参数一样也能接收参数
+     *  但是这个时候这个参数前端可以传递也可以不传递,不加注解等同于@RequestParam(required = false)
+     * @param id
+     * @return
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("员工状态启用与禁用")
+    public Result startOrStop(@PathVariable Integer status, @RequestParam(required = false) Long id) {
+        log.info("员工状态启用与禁用,员工状态:{},员工id:{}", status, id);
+        employeeService.startOrStop(status, id);
+        return Result.success();
+    }
 }
