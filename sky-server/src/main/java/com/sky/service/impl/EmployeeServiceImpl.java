@@ -5,7 +5,6 @@ import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
-import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
 import com.sky.dto.EmployeePageQueryDTO;
@@ -21,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -87,16 +85,16 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setStatus(StatusConstant.ENABLE);
 
         // 设置创建时间(当前时间)
-        employee.setCreateTime(LocalDateTime.now());
+        // employee.setCreateTime(LocalDateTime.now());
         // 设置更新时间(当前时间)
-        employee.setUpdateTime(LocalDateTime.now());
+        // employee.setUpdateTime(LocalDateTime.now());
 
         // 从当前线程中获取用户id
-        Long id = BaseContext.getCurrentId();
+        // Long id = BaseContext.getCurrentId();
         // 设置当前记录创建人id
-        employee.setCreateUser(id);
+        // employee.setCreateUser(id);
         // 设置当前记录修改人id
-        employee.setUpdateUser(id);
+        // employee.setUpdateUser(id);
 
         // 调用mapper
         employeeMapper.insert(employee);
@@ -177,8 +175,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         // 拷贝DTO对象信息给employee
         BeanUtils.copyProperties(employeeDTO, employee);
         // 设置通用update方法中的属性
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        // employee.setUpdateTime(LocalDateTime.now());
+        // employee.setUpdateUser(BaseContext.getCurrentId());
         // 调用mapper执行修改
         employeeMapper.updateById(employee);
 
