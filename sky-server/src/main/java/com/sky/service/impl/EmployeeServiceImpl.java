@@ -105,7 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * 员工分页查询
      *
-     * @param employeeDTO
+     * @param employeePageQueryDTO
      * @return
      */
     @Override
@@ -142,6 +142,46 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .id(id)
                 .build();
         employeeMapper.updateById(employee);
+    }
+
+    /**
+     * 根据id查询员工信息
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Employee getById(Long id) {
+        // 根据id查询数据库获取Employee对象
+        Employee employee = employeeMapper.getById(id);
+        // 判断对象是否存在
+        if (employee == null || employee.toString().equals(" ")) {
+            // 对象不存在,返回错误信息
+            throw new AccountNotFoundException("该用户不存在");
+        }
+        // 将密码隐藏
+        employee.setPassword("******");
+        // 对象存在,返回对象给前端
+        return employee;
+    }
+
+    /**
+     * 编辑员工信息
+     *
+     * @param employeeDTO
+     */
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        // 创建employee对象
+        Employee employee = new Employee();
+        // 拷贝DTO对象信息给employee
+        BeanUtils.copyProperties(employeeDTO, employee);
+        // 设置通用update方法中的属性
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        // 调用mapper执行修改
+        employeeMapper.updateById(employee);
+
     }
 
 }

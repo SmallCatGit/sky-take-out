@@ -108,6 +108,7 @@ public class EmployeeController {
      * 员工状态启用与禁用
      * TODO RequestParam可以不用加,只要变量和前端参数一样也能接收参数
      *  但是这个时候这个参数前端可以传递也可以不传递,不加注解等同于@RequestParam(required = false)
+     *
      * @param id
      * @return
      */
@@ -116,6 +117,34 @@ public class EmployeeController {
     public Result startOrStop(@PathVariable Integer status, @RequestParam(required = false) Long id) {
         log.info("员工状态启用与禁用,员工状态:{},员工id:{}", status, id);
         employeeService.startOrStop(status, id);
+        return Result.success();
+    }
+
+    /**
+     * 根据id查询员工信息
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("根据id查询员工信息")
+    public Result<Employee> getById(@PathVariable("id") Long id) {
+        log.info("根据id查询员工信息业务的员工id:{}", id);
+        Employee employee = employeeService.getById(id);
+        return Result.success(employee);
+    }
+
+    /**
+     * 编辑员工信息
+     *
+     * @param employeeDTO
+     * @return
+     */
+    @PutMapping
+    @ApiOperation("编辑员工信息")
+    public Result update(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("编辑员工信息:{}", employeeDTO);
+        employeeService.update(employeeDTO);
         return Result.success();
     }
 }
