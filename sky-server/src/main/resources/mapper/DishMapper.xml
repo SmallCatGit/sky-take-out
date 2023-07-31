@@ -16,4 +16,22 @@
                 #{image}, #{description}, #{createTime},
                 #{updateTime}, #{createUser}, #{updateUser}, #{status})
     </insert>
+
+    <select id="page" resultType="com.sky.vo.DishVO">
+        SELECT d.*, c.`name` AS categoryName
+        FROM dish d
+                 LEFT OUTER JOIN category c ON d.category_id = c.id
+        <where>
+            <if test="name != null">
+                and d.name like concat('%', #{name} ,'%')
+            </if>
+            <if test="categoryId != null">
+                and d.category_id = #{categoryId}
+            </if>
+            <if test="status != null">
+                and d.status = #{status}
+            </if>
+        </where>
+        order by d.create_time desc
+    </select>
 </mapper>
