@@ -110,4 +110,53 @@ public class DishServiceImpl implements DishService {
             dishFlavorMapper.deleteByDishId(id);
         }
     }
+
+    /**
+     * 根据id查询菜品和对应的口味数据
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public DishVO getByIdWithFlavor(Long id) {
+        // 根据id查询菜品信息
+        Dish dish = dishMapper.getById(id);
+
+        // 根据菜品id查询菜品关联的口味信息
+        List<DishFlavor> dishFlavors = dishFlavorMapper.getByDishId(id);
+
+        // 将查询到的数据封装到DishVO中
+        DishVO dishVO = new DishVO();
+        BeanUtils.copyProperties(dish, dishVO);
+        dishVO.setFlavors(dishFlavors);
+
+        return dishVO;
+    }
+
+    /**
+     * 修改菜品和菜品对应的口味信息
+     *
+     * @param dishDTO
+     */
+    @Override
+    public void updateWithFlavor(DishDTO dishDTO) {
+        // 创建dish对象(dishDTO对象中含有其他属性,应该排除)
+        Dish dish = new Dish();
+        // 拷贝属性
+        BeanUtils.copyProperties(dishDTO, dish);
+        // 修改菜品基本信息
+        dishMapper.update(dish);
+
+        // 获取菜品的口味数据
+        List<DishFlavor> flavors = dishDTO.getFlavors();
+        // 删除原始的口味数据
+        dishFlavorMapper.deleteByDishId(dishDTO.getId());
+        // 判断是否有口味数据
+        if (flavors != null && flavors.size() > 0) {
+            // 口味可能有新增,新增的口味应该和菜品id对应,否则口味表中就会缺少菜品id字段,需要遍历设置口味表中的菜品id
+            flavors.forEach(dishFlavor -> dishFlavor.setDishId(dishDTO.getId()));
+            // 插入新的口味数据
+            dishFlavorMapper.insertBatch(flavors);
+        }
+    }
 }

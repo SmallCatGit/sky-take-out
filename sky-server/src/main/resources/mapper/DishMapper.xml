@@ -34,4 +34,17 @@
         </where>
         order by d.create_time desc
     </select>
+    <!--TODO <if test=:等号后面的是类中的属性名-->
+    <update id="update" parameterType="dish">
+        update dish
+        <set>
+            <if test="name != null">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null">image = #{image},</if>
+            <if test="description != null">description = #{description},</if>
+            <if test="status != null">status = #{status},</if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
