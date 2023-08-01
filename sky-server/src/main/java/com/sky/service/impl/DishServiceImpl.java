@@ -162,6 +162,7 @@ public class DishServiceImpl implements DishService {
 
     /**
      * 菜品的起售与停售
+     *
      * @param status
      * @param id
      */
@@ -171,5 +172,16 @@ public class DishServiceImpl implements DishService {
         dish.setId(id);
         dish.setStatus(status);
         dishMapper.update(dish);
+    }
+
+    /**
+     * 根据分类id查询菜品
+     *
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Dish> list(Long categoryId) {
+        return dishMapper.list(categoryId);
     }
 }

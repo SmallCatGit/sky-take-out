@@ -47,4 +47,14 @@
         </set>
         where id = #{id}
     </update>
+
+    <!--SELECT * FROM dish WHERE `status` = 1 AND category_id = ?-->
+    <select id="list" resultType="com.sky.entity.Dish">
+        select * from dish
+        where status = 1
+        <if test="categoryId != null">
+            and category_id = #{categoryId}
+        </if>
+        order by create_time desc
+    </select>
 </mapper>
