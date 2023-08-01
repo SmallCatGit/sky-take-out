@@ -65,4 +65,11 @@ public interface DishMapper {
      * @return
      */
     List<Dish> list(Long categoryId);
+
+    /**
+     * 根据套餐id,获取套餐中的菜品
+     * @param setmealId
+     * @return
+     */
+    List<Dish> getBySetmealId(Long setmealId);
 }

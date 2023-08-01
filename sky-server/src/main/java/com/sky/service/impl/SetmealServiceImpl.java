@@ -2,10 +2,15 @@ package com.sky.service.impl;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.exception.SetmealEnableFailedException;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
@@ -26,6 +31,9 @@ public class SetmealServiceImpl implements SetmealService {
 
     @Autowired
     private SetmealDishMapper setmealDishMapper;
+
+    @Autowired
+    private DishMapper dishMapper;
 
     /**
      * 新增套餐和套餐中的菜品数据
@@ -69,5 +77,36 @@ public class SetmealServiceImpl implements SetmealService {
         // 调用mapper执行分页查询
         Page<SetmealVO> setmealVOPage = setmealMapper.pageQuery(setmealPageQueryDTO);
         return new PageResult(setmealVOPage.getTotal(), setmealVOPage.getResult());
+    }
+
+    /**
+     * 套餐起售与停售
+     *
+     * @param status
+     * @param id
+     */
+    @Override
+    public void status(Integer status, Long id) {
+        // 判断套餐是否打算起售
+        if (status == StatusConstant.ENABLE) {
+            // 将要起售,通过套餐id获取套餐中的菜品
+            List<Dish> dishes = dishMapper.getBySetmealId(id);
+            // 判断菜品是否为空
+            if (dishes != null && dishes.size() > 0) {
+                // 不为空,判断是否有停售菜品
+                dishes.forEach(dish -> {
+                    if (dish.getStatus() == StatusConstant.DISABLE)
+                        // 有停售菜品,提示套餐内包含未启售菜品，无法启售
+                        throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);
+                });
+            }
+        }
+
+        // 没有停售菜品,根据套餐id修改套餐状态
+        Setmeal setmeal = Setmeal.builder()
+                .id(id)
+                .status(status)
+                .build();
+        setmealMapper.update(setmeal);
     }
 }

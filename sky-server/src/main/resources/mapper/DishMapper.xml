@@ -57,4 +57,16 @@
         </if>
         order by create_time desc
     </select>
+
+    <!--
+        SELECT dish.* FROM dish LEFT JOIN setmeal_dish ON dish.id = setmeal_dish.dish_id
+        WHERE setmeal_id = ? ORDER BY dish.create_time DESC
+    -->
+    <select id="getBySetmealId" resultType="com.sky.entity.Dish">
+        select dish.*
+        from dish
+                 left join setmeal_dish on dish.id = setmeal_dish.dish_id
+        where setmeal_dish.setmeal_id = #{setmealId}
+        order by dish.create_time desc
+    </select>
 </mapper>
