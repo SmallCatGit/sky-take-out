@@ -25,4 +25,6 @@ public class MessageConstant {
     public static final String ORDER_STATUS_ERROR = "订单状态错误";
     public static final String ORDER_NOT_FOUND = "订单不存在";
 
+    public static final String NO_CHOOSE_SETMEAL = "未选择删除的套餐,请重新操作";
+
 }

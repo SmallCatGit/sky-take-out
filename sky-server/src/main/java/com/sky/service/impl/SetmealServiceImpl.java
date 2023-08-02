@@ -9,6 +9,7 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.exception.SetmealEnableFailedException;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealDishMapper;
@@ -160,5 +161,35 @@ public class SetmealServiceImpl implements SetmealService {
         setmealDishes.forEach(setmealDish -> setmealDish.setSetmealId(setmealId));
         // 插入数据到套餐菜品表中
         setmealDishMapper.insertBatch(setmealDishes);
+    }
+
+    /**
+     * 批量删除套餐和套餐中的菜品
+     *
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void deleteBatch(List<Long> ids) {
+        // 判断id是否存在
+        if (ids == null || ids.size() == 0) {
+            // 不存在,返回错误信息
+            throw new DeletionNotAllowedException(MessageConstant.NO_CHOOSE_SETMEAL);
+        }
+        // 根据id获取每一个套餐对象
+        ids.forEach(id -> {
+            Setmeal setmeal = setmealMapper.getById(id);
+            // 判断套餐是否是起售状态
+            if (setmeal.getStatus() == StatusConstant.ENABLE) {
+                // 起售中的套餐不允许删除
+                throw new DeletionNotAllowedException(MessageConstant.SETMEAL_ON_SALE);
+            }
+        });
+        // 停售状态,根据套餐id删除套餐菜品表中的数据
+        for (Long id : ids) {
+            setmealDishMapper.deleteBySetmealId(id);
+        }
+        // 再根据id删除套餐表中的数据
+        setmealMapper.deletedeleteBatch(ids);
     }
 }
