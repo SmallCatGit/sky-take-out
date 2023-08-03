@@ -5,3 +5,4 @@
 *Test.java
 **/test/
 application-aliOss.yml
+application-redis.yml

@@ -91,6 +91,7 @@
             <artifactId>knife4j-spring-boot-starter</artifactId>
         </dependency>
 
+        <!--Spring Data Redis坐标（redis的java客户端的一种,对Jedis和Lettuce进行了封装）-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
