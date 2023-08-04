@@ -118,7 +118,10 @@ public class DishController {
     @ApiOperation("根据分类id查询菜品")
     public Result<List<Dish>> list(@RequestParam Long categoryId) {
         log.info("根据分类id查询菜品:{}", categoryId);
-        List<Dish> dishes = dishService.list(categoryId);
+        Dish dish = Dish.builder()
+                .categoryId(categoryId)
+                .build();
+        List<Dish> dishes = dishService.list(dish);
         return Result.success(dishes);
     }
 }

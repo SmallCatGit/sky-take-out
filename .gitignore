@@ -4,5 +4,6 @@
 *.class
 *Test.java
 **/test/
-application-aliOss.yml
-application-redis.yml
+*-aliOss.yml
+*-redis.yml
+*-wx.yml
